@@ -2,13 +2,14 @@ var router = require('express').Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-var User = require('../models/user');
-
+var DataTypes = require('sequelize');
+var User = require('../models/user')(require('../db'), DataTypes); //.import('../models/user');
 router.route('/signup').post((req, res) => {
+ const hash= bcrypt.hashSync(req.body.user.password, 10);
   User.create({
     full_name: req.body.user.full_name,
     username: req.body.user.username,
-    passwordhash: bcrypt.hashSync(req.body.user.password, 10),
+    passwordHash: hash,
     email: req.body.user.email,
   }).then(
     function signupSuccess(user) {
