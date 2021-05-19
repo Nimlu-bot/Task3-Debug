@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => sequelize.define('User', {
+export default (sequelize, DataTypes) => sequelize.define('User', {
   full_name: {
     type: DataTypes.STRING,
     allowNull: false,

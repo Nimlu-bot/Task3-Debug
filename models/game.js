@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => sequelize.define('game', {
+export default (sequelize, DataTypes) => sequelize.define('game', {
   title: {
     type: DataTypes.STRING(25),
     allowNull: false,

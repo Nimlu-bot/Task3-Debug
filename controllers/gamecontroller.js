@@ -1,8 +1,9 @@
-const router = require('express').Router();
-const DataTypes = require('sequelize');
-const DB = require('../db');
-const GameModel = require('../models/game');
+import express from 'express';
+import DataTypes from 'sequelize';
+import DB from '../db.js';
+import GameModel from '../models/game.js';
 
+const router = express.Router();
 const Game = GameModel(DB, DataTypes);
 
 router.get('/all', (req, res) => {
@@ -113,4 +114,4 @@ router.delete('/remove/:id', (req, res) => {
   );
 });
 
-module.exports = router;
+export default router;

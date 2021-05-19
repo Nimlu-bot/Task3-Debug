@@ -1,10 +1,20 @@
-const express = require('express');
-const db = require('./db');
-const user = require('./controllers/usercontroller');
-const game = require('./controllers/gamecontroller');
-const auth = require('./middleware/validate-session');
+import express from 'express';
+import db from './db.js';
+import user from './controllers/usercontroller.js';
+import game from './controllers/gamecontroller.js';
+import auth from './middleware/validate-session.js';
 
 const app = express();
+
+db.authenticate().then(
+  () => {
+    console.log('Connected to DB');
+  },
+
+  (err) => {
+    console.log(`Error: ${err}`);
+  },
+);
 
 db.sync();
 app.use(express.json());

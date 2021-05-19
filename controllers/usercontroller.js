@@ -1,10 +1,11 @@
-const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const DataTypes = require('sequelize');
-const DB = require('../db');
-const UserModel = require('../models/user');
+import express from 'express';
+import bcrypt from 'bcryptjs'; // { hashSync, compare }
+import jwt from 'jsonwebtoken';
+import DataTypes from 'sequelize';
+import DB from '../db.js';
+import UserModel from '../models/user.js';
 
+const router = express.Router();
 const User = UserModel(DB, DataTypes);
 router.route('/signup').post((req, res) => {
   const hash = bcrypt.hashSync(req.body.user.password, 10);
@@ -57,4 +58,4 @@ router.route('/signin').post((req, res) => {
   });
 });
 
-module.exports = router;
+export default router;
