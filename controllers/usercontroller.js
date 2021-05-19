@@ -1,28 +1,30 @@
-var router = require('express').Router();
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+const router = require('express').Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const DataTypes = require('sequelize');
+const DB = require('../db');
+const UserModel = require('../models/user');
 
-var DataTypes = require('sequelize');
-var User = require('../models/user')(require('../db'), DataTypes); //.import('../models/user');
+const User = UserModel(DB, DataTypes);
 router.route('/signup').post((req, res) => {
- const hash= bcrypt.hashSync(req.body.user.password, 10);
+  const hash = bcrypt.hashSync(req.body.user.password, 10);
   User.create({
     full_name: req.body.user.full_name,
     username: req.body.user.username,
     passwordHash: hash,
     email: req.body.user.email,
   }).then(
-    function signupSuccess(user) {
-      let token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', {
+    (user) => {
+      const token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', {
         expiresIn: 60 * 60 * 24,
       });
       res.status(200).json({
-        user: user,
-        token: token,
+        user,
+        token,
       });
     },
 
-    function signupFail(err) {
+    (err) => {
       res.status(500).send(err.message);
     },
   );
@@ -34,13 +36,13 @@ router.route('/signin').post((req, res) => {
       bcrypt.compare(
         req.body.user.password,
         user.passwordHash,
-        function (err, matches) {
+        (_err, matches) => {
           if (matches) {
-            var token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', {
+            const token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', {
               expiresIn: 60 * 60 * 24,
             });
             res.json({
-              user: user,
+              user,
               message: 'Successfully authenticated.',
               sessionToken: token,
             });
