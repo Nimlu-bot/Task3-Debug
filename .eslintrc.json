@@ -11,6 +11,12 @@
         "sourceType": "module"
     },
     "rules": {
-			"import/extensions":[1,"always" ]
+			"import/extensions":[1,"always" ],
+			"object-curly-newline": [1, {
+        "ObjectExpression": "always",
+        "ObjectPattern": { "multiline": true },
+        "ImportDeclaration":  { "multiline": false, "minProperties": 4 },
+        "ExportDeclaration": { "multiline": false, "minProperties": 6 }
+    }]
     }
 }
